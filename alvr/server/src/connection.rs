@@ -705,6 +705,16 @@ fn try_connect(mut client_ips: HashMap<IpAddr, String>) -> ConResult {
                 let right_hand_skeleton;
                 {
                     let mut tracking_manager_lock = tracking_manager.lock();
+                    for hand_joint in tracking
+                        .hand_skeletons
+                        .iter()
+                        .filter_map(Clone::clone)
+                        .map(IntoIterator::into_iter)
+                        .flatten()
+                    {
+                        tracking_manager_lock.update_floor(hand_joint.position.y);
+                    }
+
                     let data_manager_lock = SERVER_DATA_MANAGER.read();
                     let headset_config = &data_manager_lock.settings().headset;
 

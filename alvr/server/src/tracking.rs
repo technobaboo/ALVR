@@ -111,6 +111,10 @@ impl TrackingManager {
         }
     }
 
+    pub fn update_floor(&mut self, min_y: f32) {
+        self.recentering_origin.position.y = self.recentering_origin.position.y.min(min_y);
+    }
+
     // Performs all kinds of tracking transformations, driven by settings.
     pub fn transform_motions(
         &mut self,
